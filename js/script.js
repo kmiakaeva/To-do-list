@@ -6,76 +6,83 @@ const inputTask = document.querySelector(".input-task"),
     deleteBtnTasks = document.querySelector(".delete-btn-tasks"),
     activeTasksWrap = document.querySelector(".active-tasks__wrap");
 
-/* Добавляем задачу с помощью "Enter" или при "click" на кнопке "Add" */
 
 function createTask() {
-    if (inputTask.value) {
-        const task = document.createElement("div"); // Создаем блок для задач
-        task.classList.add("task", "task-wrap");
+    const text = inputTask.value; // В text содержится значение поля задач
+    if (text) {
+        const task = createTemplate(text);
+        tasksWrap.hidden = false; // Убираем атрибут hidden
+        render(task);
+    }
+    inputTask.value = ""; // Обнуляем поле после каждой введенной задачи
+}
 
-        const label_task = document.createElement("label"); // Создаем label
-        label_task.classList.add("check");
+/* Возвращаем в функцию элемент "task" с дочерними элементами */
 
-        const check__input = document.createElement("input"); // Создаем input
-        check__input.classList.add("check__input");
-        check__input.type = "checkbox"; // Добавляем аттрибут type со значением "checkbox"
+function createTemplate(text) {
+    return `
+        <div class="task task-wrap">
+            <label class="check">
+                <input class="check__input" type="checkbox">
+                <span class="check__box"></span>
+                <input class="text" value="${text}">
+            </label>
+            <span class="bin"></span>
+        </div>
+    `;
+}
 
-        const check__box = document.createElement("span"); // Создаем span
-        check__box.classList.add("check__box");
+function render(html) {
+    activeTasksWrap.insertAdjacentHTML("afterbegin", html); // Помещаем элемент "task" в начало activeTasksWrap
+    addEventListeners();
+}
 
-        const text_task = inputTask.value; // Объявляем переменную с полем input
+function addEventListeners() {
+    const activeTasks = document.querySelectorAll(".active-tasks__wrap");
+    activeTasks.forEach(task => {
+        const checkInput = task.querySelector(".check__input");
+        const bin = task.querySelector(".bin");
 
-        const bin_task = document.createElement("span"); // Создаем корзину
-        bin_task.classList.add("bin");
+        checkInput.addEventListener("change", completeTask);
+        bin.addEventListener("click", deleteTask);
+    });
+}
 
-        activeTasksWrap.prepend(task); // Помещаем блок в начало обертки активных задач
-        task.prepend(label_task); // Вставляем label в начале родительского элемента
-        label_task.prepend(check__input); // Вставляем в label input
-        check__input.after(check__box); // Вставляем span после input
-        check__box.after(text_task); // Вставляем задачу после span
-        task.append(bin_task); // Помещаем span с корзиной в конец task
 
-        tasksWrap.hidden = false; // Убираем атрибут hidden у обертки
+function completeTask(e) {
+    const tg = e.target;
+    const check = tg.closest(".check"); // Ищем ближайший родительский элемент "check", на котором сработало событие
+    const checkInput = check.querySelector(".check__input");
 
-        inputTask.value = ""; //Обнуляем поле input
-
-        /* Checkbox */
-
-        check__input.addEventListener("change", () => {
-            if (check__input.checked) {
-                label_task.classList.add("text-task_completed"); // Зачеркиваем задачу
-                activeTasksWrap.append(task); // Ставим вниз
-            } else {
-                label_task.classList.remove("text-task_completed"); // Убираем зачеркивание
-                activeTasksWrap.prepend(task); // Ставим наверх
-            }
-        });
-
-        /* Bin */
-
-        bin_task.addEventListener("click", () => {
-            task.remove();
-        });
-
-        /* Кнопка "Delete all" */
-
-        deleteBtnTasks.addEventListener("click", () => {
-            activeTasksWrap.removeChild(task);
-            tasksWrap.hidden = true;
-        });
+    if (checkInput.checked) {
+        check.classList.add("text-task_completed"); // Зачеркиваем задачу
+    } else {
+        check.classList.remove("text-task_completed"); // Убираем зачеркивание
     }
 }
 
-function OnEnterInput(e) {
-    if (e.code === "Enter") {
-        createTask();
-    }
+function deleteTask(e) {
+    const tg = e.target;
+    const task = tg.closest(".task");
+    task.remove();
 }
+
+function deleteAllTasks() {
+    const allTasks = document.querySelectorAll(".task");
+    allTasks.forEach(task => {
+        task.remove();
+    });
+    tasksWrap.hidden = "true"; // Добавляем атрибут hidden у кнопки "Delete All"
+}
+
+
+const OnEnterInput = (e) => e.code === "Enter" && createTask();
 
 function onClickAddButton() {
     createTask();
 }
 
+
 inputTask.addEventListener("keyup", OnEnterInput);
 addButton.addEventListener("click", onClickAddButton);
-deleteBtnTasks.addEventListener("click", createTask);
+deleteBtnTasks.addEventListener("click", deleteAllTasks);
