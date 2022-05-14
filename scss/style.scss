@@ -1,0 +1,221 @@
+/* Colors */
+
+$violet: rgb(230, 2, 255);
+$hover-violet: rgba(230, 2, 255, 0.85);
+$aquamarine: rgb(0, 251, 255);
+$soft-black: rgb(57, 57, 57);
+$dark-grey: rgb(98, 98, 98);
+$grey: rgb(128, 128, 128);
+$medium-grey: rgba(128, 128, 128, 0.5);
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: $soft-black;
+}
+
+body {
+    background: linear-gradient(to right, $violet, $aquamarine);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+}
+
+.container {
+    margin: 3% auto;
+    padding-top: 40px;
+    padding-right: 40px;
+    padding-bottom: 32px;
+    padding-left: 40px;
+    max-width: 576px;
+    max-height: 600px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: -1px 3px 6px $medium-grey;
+}
+
+.to-do-list {
+
+    h1 {
+        font-size: 34px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .input-wrap {
+        margin-top: 25px;
+        display: flex;
+        justify-content: space-between;
+
+        .input-task {
+            margin-right: 5px;
+            padding: 10px;
+            width: 90%;
+            border: none;
+            border: 1px solid $medium-grey;
+            border-radius: 7px;
+            outline: none;
+
+            &:focus-visible {
+                outline: none;
+                box-shadow: 0 0 0 1px $soft-black;
+            }
+        }
+
+        .add-button {
+            padding: 10px 18px;
+            background-color: $violet;
+            color: white;
+            border: 1px solid $violet;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: 0.5s ease-in-out;
+
+            &:hover {
+                background-color: $hover-violet;
+                color: white;
+                box-shadow: 0 1px 5px 0 $medium-grey;
+            }
+
+            &:focus-visible {
+                outline: none;
+                box-shadow: 0 0 0 1px $soft-black;
+            }
+        }
+    }
+
+    .tasks-wrap {
+        margin-top: 20px;
+
+        .delete-btn-tasks {
+            margin-bottom: 8px;
+            padding: 8px 10px;
+            background-color: $grey;
+            color: white;
+            border: 1px solid $medium-grey;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: 0.5s ease-in-out;
+
+            &:hover {
+                background-color: $dark-grey;
+                color: white;
+                box-shadow: 0 1px 5px 0 $medium-grey;
+            }
+
+            &:focus-visible {
+                outline: none;
+                box-shadow: 0 0 0 1px $soft-black;
+            }
+        }
+    }
+
+    .active-tasks {
+        padding-right: 10px;
+        max-height: 300px;
+
+        &__title {
+            margin-top: 16px;
+            text-align: center;
+            font-size: 23px;
+        }
+    }
+
+    .scroll-bar {
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: $medium-grey;
+            border-radius: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: $grey;
+            border-radius: 4px;
+        }
+    }
+}
+
+.task-wrap {
+    margin-top: 8px;
+    padding: 10px 0;
+}
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid $medium-grey;
+
+    .check {
+        position: relative;
+        padding-left: 30px;
+        display: flex;
+        align-items: center;
+
+        .check__input {
+            position: absolute;
+            appearance: none;
+        }
+
+        .check__box {
+            position: absolute;
+            margin-left: -30px;
+            width: 24px;
+            height: 24px;
+            background: url("../img/check.svg");
+            cursor: pointer;
+        }
+    }
+
+    .bin {
+        width: 24px;
+        height: 24px;
+        background: url("../img/bin.svg");
+        cursor: pointer;
+
+        &:active {
+            background: url("../img/bin-on-hover.svg");
+        }
+    }
+}
+
+/* Task on focus */
+
+.check__input:focus+.check__box {
+    background: url("../img/check-on-focus.svg");
+}
+
+/* Task on checked */
+
+.check__input:checked+.check__box {
+    background: url("../img/check-on-checked.svg");
+}
+
+
+/* Task on checked + focus */
+
+.check__input:checked:focus+.check__box {
+    background: url("../img/check-on-checked-on-focus.svg");
+}
+
+.text-task_completed {
+    color: $medium-grey;
+    text-decoration: line-through;
+}
