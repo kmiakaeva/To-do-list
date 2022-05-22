@@ -92,6 +92,10 @@ function deleteTask(e) {
     const tg = e.target;
     const task = tg.closest(".task");
     task.remove();
+
+    if (!(activeTasksWrap.children.length)) {
+        tasksWrap.hidden = "true"; // Добавляем атрибут "true", если нет задач
+    }
 }
 
 function deleteAllTasks() {
