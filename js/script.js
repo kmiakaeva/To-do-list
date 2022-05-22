@@ -9,6 +9,7 @@ const inputTask = document.querySelector(".input-task"),
 
 function createTask() {
     const text = inputTask.value; // В text содержится значение поля задач
+
     if (text) {
         const task = createTemplate(text);
         tasksWrap.hidden = false; // Убираем атрибут hidden
@@ -17,17 +18,18 @@ function createTask() {
     inputTask.value = ""; // Обнуляем поле после каждой введенной задачи
 }
 
-/* Возвращаем в функцию элемент "task" с дочерними элементами */
-
 function createTemplate(text) {
     return `
         <div class="task task-wrap">
             <label class="check">
                 <input class="check__input" type="checkbox">
                 <span class="check__box"></span>
-                <input class="text" value="${text}">
+                <input class="check__text" value="${text}" readonly>
             </label>
+            <div class="action-task">
+            <span class="edit-text"></span>
             <span class="bin"></span>
+            </div>
         </div>
     `;
 }
@@ -39,11 +41,14 @@ function render(html) {
 
 function addEventListeners() {
     const activeTasks = document.querySelectorAll(".active-tasks__wrap");
+
     activeTasks.forEach(task => {
         const checkInput = task.querySelector(".check__input");
+        const pencil = task.querySelector(".edit-text");
         const bin = task.querySelector(".bin");
 
         checkInput.addEventListener("change", completeTask);
+        pencil.addEventListener("click", onEditTextOfTask);
         bin.addEventListener("click", deleteTask);
     });
 }
@@ -51,13 +56,35 @@ function addEventListeners() {
 
 function completeTask(e) {
     const tg = e.target;
-    const check = tg.closest(".check"); // Ищем ближайший родительский элемент "check", на котором сработало событие
+    const check = tg.closest(".check");
     const checkInput = check.querySelector(".check__input");
 
     if (checkInput.checked) {
-        check.classList.add("text-task_completed"); // Зачеркиваем задачу
+        check.classList.add("task_completed"); // Зачеркиваем задачу
     } else {
-        check.classList.remove("text-task_completed"); // Убираем зачеркивание
+        check.classList.remove("task_completed"); // Убираем зачеркивание
+    }
+}
+
+function onEditTextOfTask(e) {
+    const tg = e.target;
+    const task = tg.closest(".task");
+    const textInputInCheck = task.querySelector(".check__text");
+    const pencil = task.querySelector(".edit-text");
+
+    if (textInputInCheck.hasAttribute("readonly")) {
+        textInputInCheck.removeAttribute("readonly");
+        textInputInCheck.focus();
+        textInputInCheck.setSelectionRange(textInputInCheck.value.length, textInputInCheck.value.length);
+
+        pencil.innerText = "Save";
+        pencil.classList.toggle("save-text");
+    } else {
+        textInputInCheck.setAttribute("readonly", "readonly");
+        textInputInCheck.blur();
+
+        pencil.innerText = "";
+        pencil.classList.toggle("save-text");
     }
 }
 
@@ -69,10 +96,11 @@ function deleteTask(e) {
 
 function deleteAllTasks() {
     const allTasks = document.querySelectorAll(".task");
+
     allTasks.forEach(task => {
         task.remove();
     });
-    tasksWrap.hidden = "true"; // Добавляем атрибут hidden у кнопки "Delete All"
+    tasksWrap.hidden = "true"; // Добавляем атрибут hidden
 }
 
 

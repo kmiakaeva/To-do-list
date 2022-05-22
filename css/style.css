@@ -1,3 +1,4 @@
+/* Colors */
 *,
 *::before,
 *::after {
@@ -166,6 +167,9 @@ h6 {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   border-bottom: 1px solid rgba(128, 128, 128, 0.5);
 }
 
@@ -180,14 +184,14 @@ h6 {
           align-items: center;
 }
 
-.task .check .check__input {
+.task .check__input {
   position: absolute;
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
 }
 
-.task .check .check__box {
+.task .check__box {
   position: absolute;
   margin-left: -30px;
   width: 24px;
@@ -196,15 +200,46 @@ h6 {
   cursor: pointer;
 }
 
-.task .bin {
+.task .check__text {
+  background-color: #fff;
+  border: none;
+  outline: none;
+  cursor: default;
+}
+
+.action-task {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+
+.action-task .edit-text {
+  margin-right: 10px;
+  width: 24px;
+  height: 24px;
+  background: url("../img/rename.svg");
+  cursor: pointer;
+}
+
+.action-task .save-text {
+  width: 32px;
+  height: 24px;
+  margin-right: 10px;
+  background: none;
+  line-height: 24px;
+  color: #e602ff;
+  cursor: pointer;
+}
+
+.action-task .bin {
   width: 24px;
   height: 24px;
   background: url("../img/bin.svg");
   cursor: pointer;
 }
 
-.task .bin:active {
-  background: url("../img/bin-on-hover.svg");
+.action-task .bin:active {
+  background: url("../img/bin-on-active.svg");
 }
 
 /* Task on focus */
@@ -222,7 +257,7 @@ h6 {
   background: url("../img/check-on-checked-on-focus.svg");
 }
 
-.text-task_completed {
+.task_completed {
   color: rgba(128, 128, 128, 0.5);
   text-decoration: line-through;
 }

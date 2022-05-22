@@ -161,6 +161,7 @@ h6 {
 .task {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     border-bottom: 1px solid $medium-grey;
 
     .check {
@@ -169,12 +170,12 @@ h6 {
         display: flex;
         align-items: center;
 
-        .check__input {
+        &__input {
             position: absolute;
             appearance: none;
         }
 
-        .check__box {
+        &__box {
             position: absolute;
             margin-left: -30px;
             width: 24px;
@@ -182,6 +183,35 @@ h6 {
             background: url("../img/check.svg");
             cursor: pointer;
         }
+
+        &__text {
+            background-color: #fff;
+            border: none;
+            outline: none;
+            cursor: default;
+        }
+    }
+}
+
+.action-task {
+    display: inline-flex;
+
+    .edit-text {
+        margin-right: 10px;
+        width: 24px;
+        height: 24px;
+        background: url("../img/rename.svg");
+        cursor: pointer;
+    }
+
+    .save-text {
+        width: 32px;
+        height: 24px;
+        margin-right: 10px;
+        background: none;
+        line-height: 24px;
+        color: $violet;
+        cursor: pointer;
     }
 
     .bin {
@@ -191,7 +221,7 @@ h6 {
         cursor: pointer;
 
         &:active {
-            background: url("../img/bin-on-hover.svg");
+            background: url("../img/bin-on-active.svg");
         }
     }
 }
@@ -215,7 +245,7 @@ h6 {
     background: url("../img/check-on-checked-on-focus.svg");
 }
 
-.text-task_completed {
+.task_completed {
     color: $medium-grey;
     text-decoration: line-through;
 }
