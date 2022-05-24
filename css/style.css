@@ -201,11 +201,13 @@ h6 {
 }
 
 .task .check__text {
-  width: 360px;
+  max-width: 375px;
   background-color: #fff;
-  border: none;
+  cursor: auto;
+}
+
+.task .check__text:focus {
   outline: none;
-  cursor: default;
 }
 
 .action-task {
@@ -243,19 +245,9 @@ h6 {
   background: url("../img/bin-on-active.svg");
 }
 
-/* Task on focus */
-.check__input:focus + .check__box {
-  background: url("../img/check-on-focus.svg");
-}
-
 /* Task on checked */
 .check__input:checked + .check__box {
   background: url("../img/check-on-checked.svg");
-}
-
-/* Task on checked + focus */
-.check__input:checked:focus + .check__box {
-  background: url("../img/check-on-checked-on-focus.svg");
 }
 
 .task_completed {

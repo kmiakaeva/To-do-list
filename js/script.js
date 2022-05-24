@@ -24,7 +24,7 @@ function createTemplate(text) {
             <label class="check">
                 <input class="check__input" type="checkbox">
                 <span class="check__box"></span>
-                <input class="check__text" value="${text}" readonly>
+                <div class="check__text" contenteditable="false">${text}</div>
             </label>
             <div class="action-task">
             <span class="edit-text"></span>
@@ -35,6 +35,7 @@ function createTemplate(text) {
 }
 
 function render(html) {
+    tasksWrap.hidden = false;
     activeTasksWrap.insertAdjacentHTML("afterbegin", html); // Помещаем элемент "task" в начало activeTasksWrap
     addEventListeners();
 }
@@ -72,20 +73,33 @@ function onEditTextOfTask(e) {
     const textInputInCheck = task.querySelector(".check__text");
     const pencil = task.querySelector(".edit-text");
 
-    if (textInputInCheck.hasAttribute("readonly")) {
-        textInputInCheck.removeAttribute("readonly");
-        textInputInCheck.focus();
-        textInputInCheck.setSelectionRange(textInputInCheck.value.length, textInputInCheck.value.length);
+    switch (textInputInCheck.getAttribute("contenteditable")) {
+        case "false":
+            textInputInCheck.setAttribute("contenteditable", "true");
+            setTheCursorPosition(e);
+            pencil.innerText = "Save";
+            pencil.classList.toggle("save-text");
+            break;
 
-        pencil.innerText = "Save";
-        pencil.classList.toggle("save-text");
-    } else {
-        textInputInCheck.setAttribute("readonly", "readonly");
-        textInputInCheck.blur();
-
-        pencil.innerText = "";
-        pencil.classList.toggle("save-text");
+        case "true":
+            textInputInCheck.setAttribute("contenteditable", "false");
+            pencil.innerText = "";
+            pencil.classList.toggle("save-text");
+            break;
     }
+}
+
+function setTheCursorPosition(e) {
+    const tg = e.target;
+    const task = tg.closest(".task");
+    const textInputInCheck = task.querySelector(".check__text");
+    const selection = window.getSelection();
+    const range = document.createRange();
+
+    range.selectNodeContents(textInputInCheck);
+    selection.removeAllRanges();
+    range.collapse(false);
+    selection.addRange(range);
 }
 
 function deleteTask(e) {
@@ -104,7 +118,7 @@ function deleteAllTasks() {
     allTasks.forEach(task => {
         task.remove();
     });
-    tasksWrap.hidden = "true"; // Добавляем атрибут hidden
+    tasksWrap.hidden = "true";
 }
 
 

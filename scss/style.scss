@@ -185,11 +185,13 @@ h6 {
         }
 
         &__text {
-            width: 360px;
+            max-width: 375px;
             background-color: #fff;
-            border: none;
-            outline: none;
-            cursor: default;
+            cursor: auto;
+
+            &:focus {
+                outline: none;
+            }
         }
     }
 }
@@ -227,23 +229,10 @@ h6 {
     }
 }
 
-/* Task on focus */
-
-.check__input:focus+.check__box {
-    background: url("../img/check-on-focus.svg");
-}
-
 /* Task on checked */
 
 .check__input:checked+.check__box {
     background: url("../img/check-on-checked.svg");
-}
-
-
-/* Task on checked + focus */
-
-.check__input:checked:focus+.check__box {
-    background: url("../img/check-on-checked-on-focus.svg");
 }
 
 .task_completed {
