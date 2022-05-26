@@ -6,21 +6,41 @@ const inputTask = document.querySelector(".input-task"),
     deleteBtnTasks = document.querySelector(".delete-btn-tasks"),
     activeTasksWrap = document.querySelector(".active-tasks__wrap");
 
+let tasks = JSON.parse(localStorage.getItem("to-do-list"));
 
-function createTask() {
-    const text = inputTask.value; // В text содержится значение поля задач
 
-    if (text) {
-        const task = createTemplate(text);
-        tasksWrap.hidden = false; // Убираем атрибут hidden
-        render(task);
+function showToDoList() {
+    if (tasks) {
+        tasks.forEach((task, id) => {
+            const template = createTemplate(task.name, id);
+            render(template);
+        });
     }
-    inputTask.value = ""; // Обнуляем поле после каждой введенной задачи
 }
 
-function createTemplate(text) {
+showToDoList();
+
+function createTask() {
+    const text = inputTask.value;
+    let id;
+    const task = createTemplate(text, id);
+    if (!tasks) {
+        tasks = [];
+    }
+    const taskDescr = {
+        name: text,
+        id: id
+    };
+    tasks.push(taskDescr);
+    render(task);
+    localStorage.setItem("to-do-list", JSON.stringify(tasks));
+    tasksWrap.hidden = false; // Показываем обертку
+    inputTask.value = "";
+}
+
+function createTemplate(text, id) {
     return `
-        <div class="task task-wrap">
+        <div data-set="${id}" class="task task-wrap">
             <label class="check">
                 <input class="check__input" type="checkbox">
                 <span class="check__box"></span>
@@ -42,7 +62,6 @@ function render(html) {
 
 function addEventListeners() {
     const activeTasks = document.querySelectorAll(".active-tasks__wrap");
-
     activeTasks.forEach(task => {
         const checkInput = task.querySelector(".check__input");
         const pencil = task.querySelector(".edit-text");
@@ -59,7 +78,6 @@ function completeTask(e) {
     const tg = e.target;
     const check = tg.closest(".check");
     const checkInput = check.querySelector(".check__input");
-
     if (checkInput.checked) {
         check.classList.add("task_completed"); // Зачеркиваем задачу
     } else {
@@ -72,7 +90,6 @@ function onEditTextOfTask(e) {
     const task = tg.closest(".task");
     const textInputInCheck = task.querySelector(".check__text");
     const pencil = task.querySelector(".edit-text");
-
     switch (textInputInCheck.getAttribute("contenteditable")) {
         case "false":
             textInputInCheck.setAttribute("contenteditable", "true");
@@ -95,7 +112,6 @@ function setTheCursorPosition(e) {
     const textInputInCheck = task.querySelector(".check__text");
     const selection = window.getSelection();
     const range = document.createRange();
-
     range.selectNodeContents(textInputInCheck);
     selection.removeAllRanges();
     range.collapse(false);
@@ -106,15 +122,13 @@ function deleteTask(e) {
     const tg = e.target;
     const task = tg.closest(".task");
     task.remove();
-
     if (!(activeTasksWrap.children.length)) {
-        tasksWrap.hidden = "true"; // Добавляем атрибут "true", если нет задач
+        tasksWrap.hidden = "true";
     }
 }
 
 function deleteAllTasks() {
     const allTasks = document.querySelectorAll(".task");
-
     allTasks.forEach(task => {
         task.remove();
     });
