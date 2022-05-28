@@ -27,8 +27,8 @@ function createTask() {
 function showToDoList() {
     let template = "";
     if (tasks) {
-        tasks.forEach(task => {
-            template += createTemplate(task.name, task.id);
+        tasks.forEach((task, id) => {
+            template += createTemplate(task.name, id);
             render(template);
         });
     }
