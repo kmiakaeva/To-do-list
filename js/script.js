@@ -9,38 +9,35 @@ const inputTask = document.querySelector(".input-task"),
 let tasks = JSON.parse(localStorage.getItem("to-do-list"));
 
 
-function showToDoList() {
-    if (tasks) {
-        tasks.forEach((task, id) => {
-            const template = createTemplate(task.name, id);
-            render(template);
-        });
-    }
-}
-
-showToDoList();
-
 function createTask() {
     const text = inputTask.value;
-    let id;
-    const task = createTemplate(text, id);
     if (!tasks) {
         tasks = [];
     }
     const taskDescr = {
         name: text,
-        id: id
+        checked: false,
     };
     tasks.push(taskDescr);
-    render(task);
     localStorage.setItem("to-do-list", JSON.stringify(tasks));
-    tasksWrap.hidden = false; // Показываем обертку
     inputTask.value = "";
+    showToDoList();
 }
+
+function showToDoList() {
+    let template = "";
+    if (tasks) {
+        tasks.forEach(task => {
+            template += createTemplate(task.name, task.id);
+            render(template);
+        });
+    }
+}
+showToDoList();
 
 function createTemplate(text, id) {
     return `
-        <div data-set="${id}" class="task task-wrap">
+        <div data-id="${id}" class="task task-wrap">
             <label class="check">
                 <input class="check__input" type="checkbox">
                 <span class="check__box"></span>
@@ -54,10 +51,10 @@ function createTemplate(text, id) {
     `;
 }
 
-function render(html) {
-    tasksWrap.hidden = false;
-    activeTasksWrap.insertAdjacentHTML("afterbegin", html); // Помещаем элемент "task" в начало activeTasksWrap
+function render(template) {
+    activeTasksWrap.innerHTML = template;
     addEventListeners();
+    tasksWrap.hidden = false;
 }
 
 function addEventListeners() {
@@ -66,7 +63,6 @@ function addEventListeners() {
         const checkInput = task.querySelector(".check__input");
         const pencil = task.querySelector(".edit-text");
         const bin = task.querySelector(".bin");
-
         checkInput.addEventListener("change", completeTask);
         pencil.addEventListener("click", onEditTextOfTask);
         bin.addEventListener("click", deleteTask);
