@@ -11,17 +11,19 @@ let tasks = JSON.parse(localStorage.getItem("to-do-list"));
 
 function createTask() {
     const text = inputTask.value;
-    if (!tasks) {
-        tasks = [];
+    if (text) {
+        if (!tasks) {
+            tasks = [];
+        }
+        const taskDescr = {
+            name: text,
+            checked: false,
+        };
+        tasks.push(taskDescr);
+        localStorage.setItem("to-do-list", JSON.stringify(tasks));
+        inputTask.value = "";
+        showToDoList();
     }
-    const taskDescr = {
-        name: text,
-        checked: false,
-    };
-    tasks.push(taskDescr);
-    localStorage.setItem("to-do-list", JSON.stringify(tasks));
-    inputTask.value = "";
-    showToDoList();
 }
 
 function showToDoList() {
