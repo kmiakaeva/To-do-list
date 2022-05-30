@@ -37,17 +37,19 @@ function showToDoList() {
 }
 showToDoList();
 
-function createTemplate(text, id) {
+function createTemplate(task, id) {
     return `
-        <div data-id="${id}" class="task task-wrap">
-            <label class="check">
-                <input class="check__input" type="checkbox">
-                <span class="check__box"></span>
-                <div class="check__text" contenteditable="false">${text}</div>
-            </label>
+        <div class="task task-wrap">
+            <div class="input-task">
+                <label for="${id}" class="check" >
+                    <input id="${id}" data-id="${id}" class="check__input" type="checkbox">
+                    <span id="${id}" data-id="${id}" class="check__box"></span>
+                </label>
+                <div class="text" contenteditable="false">${task}</div>
+            </div>
             <div class="action-task">
-            <span class="edit-text"></span>
-            <span class="bin"></span>
+                <span class="edit-text"></span>
+                <span class="bin"></span>
             </div>
         </div>
     `;
@@ -60,8 +62,8 @@ function render(template) {
 }
 
 function addEventListeners() {
-    const activeTasks = document.querySelectorAll(".active-tasks__wrap");
-    activeTasks.forEach(task => {
+    const tasks = document.querySelectorAll(".task");
+    tasks.forEach(task => {
         const checkInput = task.querySelector(".check__input");
         const pencil = task.querySelector(".edit-text");
         const bin = task.querySelector(".bin");
@@ -74,19 +76,27 @@ function addEventListeners() {
 
 function completeTask(e) {
     const tg = e.target;
+    const id = tg.dataset.id;
     const check = tg.closest(".check");
     const checkInput = check.querySelector(".check__input");
+    const task = tg.closest(".task");
+    const checkText = task.querySelector(".text");
     if (checkInput.checked) {
-        check.classList.add("task_completed"); // Зачеркиваем задачу
+        tasks[id].checked = true;
+        checkInput.setAttribute("checked", "checked");
+        checkText.classList.add("task_completed"); // Зачеркиваем задачу
     } else {
-        check.classList.remove("task_completed"); // Убираем зачеркивание
+        tasks[id].checked = false;
+        checkInput.removeAttribute("checked", "checked");
+        checkText.classList.remove("task_completed"); // Убираем зачеркивание
     }
+    localStorage.setItem("to-do-list", JSON.stringify(tasks));
 }
 
 function onEditTextOfTask(e) {
     const tg = e.target;
     const task = tg.closest(".task");
-    const textInputInCheck = task.querySelector(".check__text");
+    const textInputInCheck = task.querySelector(".text");
     const pencil = task.querySelector(".edit-text");
     switch (textInputInCheck.getAttribute("contenteditable")) {
         case "false":
@@ -107,7 +117,7 @@ function onEditTextOfTask(e) {
 function setTheCursorPosition(e) {
     const tg = e.target;
     const task = tg.closest(".task");
-    const textInputInCheck = task.querySelector(".check__text");
+    const textInputInCheck = task.querySelector(".text");
     const selection = window.getSelection();
     const range = document.createRange();
     range.selectNodeContents(textInputInCheck);

@@ -164,27 +164,32 @@ h6 {
     align-items: center;
     border-bottom: 1px solid $medium-grey;
 
-    .check {
-        position: relative;
-        padding-left: 30px;
+    .input-task {
         display: flex;
-        align-items: center;
 
-        &__input {
-            position: absolute;
-            appearance: none;
+        .check {
+            position: relative;
+            padding-left: 30px;
+            display: flex;
+            align-items: center;
+
+            &__input {
+                position: absolute;
+                appearance: none;
+            }
+
+            &__box {
+                position: absolute;
+                margin-left: -30px;
+                width: 24px;
+                height: 24px;
+                background: url("../img/check.svg");
+                cursor: pointer;
+            }
+
         }
 
-        &__box {
-            position: absolute;
-            margin-left: -30px;
-            width: 24px;
-            height: 24px;
-            background: url("../img/check.svg");
-            cursor: pointer;
-        }
-
-        &__text {
+        .text {
             max-width: 375px;
             background-color: #fff;
             cursor: auto;
