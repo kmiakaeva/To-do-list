@@ -173,7 +173,13 @@ h6 {
   border-bottom: 1px solid rgba(128, 128, 128, 0.5);
 }
 
-.task .check {
+.task .input-task {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.task .input-task .check {
   position: relative;
   padding-left: 30px;
   display: -webkit-box;
@@ -184,14 +190,14 @@ h6 {
           align-items: center;
 }
 
-.task .check__input {
+.task .input-task .check__input {
   position: absolute;
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
 }
 
-.task .check__box {
+.task .input-task .check__box {
   position: absolute;
   margin-left: -30px;
   width: 24px;
@@ -200,13 +206,13 @@ h6 {
   cursor: pointer;
 }
 
-.task .check__text {
+.task .input-task .text {
   max-width: 375px;
   background-color: #fff;
   cursor: auto;
 }
 
-.task .check__text:focus {
+.task .input-task .text:focus {
   outline: none;
 }
 
