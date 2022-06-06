@@ -14,9 +14,7 @@ $medium-grey: rgba(128, 128, 128, 0.5);
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Source Sans Pro", sans-serif;
-    font-size: 16px;
-    font-weight: 400;
+    font: 400 16px "Source Sans Pro", sans-serif;
     color: $soft-black;
 }
 
@@ -25,20 +23,13 @@ body {
 }
 
 h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h2 {
     margin: 0;
 }
 
 .container {
     margin: 3% auto;
-    padding-top: 40px;
-    padding-right: 40px;
-    padding-bottom: 32px;
-    padding-left: 40px;
+    padding: 40px 40px 32px 40px;
     max-width: 576px;
     max-height: 600px;
     background-color: white;
