@@ -16,26 +16,40 @@
     <!-- Style -->
 
     <link rel="stylesheet" href="css/style.css">
-    </link>
 </head>
 
 <body>
     <div class="container">
         <div class="to-do-list">
             <h1>to-do list</h1>
+
+            <!-- Input wrap -->
+
             <div class="input-wrap">
                 <input class="input-task" type="text" placeholder="New task" autocomplete="off">
-                <button class="add-button" type="button">Add</button></div>
+                <button class="add-button" type="button">Add</button>
+            </div>
+
+            <!-- Hidden tasks wrap -->
+
             <div hidden class="tasks-wrap">
                 <button class="delete-btn-tasks" type="button">Delete all</button>
+
+                <!-- Active tasks -->
+
                 <div class="active-tasks scroll-bar">
                     <h2 class="active-tasks__title">Tasks</h2>
+
+                    <!-- Active tasks wrap -->
+
                     <div class="active-tasks__wrap"></div>
                 </div>
             </div>
         </div>
-
     </div>
+
+    <!-- Script -->
+
     <script src="js/script.js"></script>
 </body>
 
