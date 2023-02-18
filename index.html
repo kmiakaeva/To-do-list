@@ -1,56 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To-Do List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
 
-    <!-- Font -->
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
-
-    <!-- Style -->
-
-    <link rel="stylesheet" href="css/style.css">
-</head>
-
-<body>
+  <body>
     <div class="container">
-        <div class="to-do-list">
-            <h1>to-do list</h1>
+      <div class="to-do-list">
+        <h1>to-do list</h1>
 
-            <!-- Input wrap -->
+        <!-- Input wrap -->
 
-            <div class="input-wrap">
-                <input class="input-task" type="text" placeholder="New task" autocomplete="off">
-                <button class="add-button" type="button">Add</button>
-            </div>
-
-            <!-- Hidden tasks wrap -->
-
-            <div hidden class="tasks-wrap">
-                <button class="delete-btn-tasks" type="button">Delete all</button>
-
-                <!-- Active tasks -->
-
-                <div class="active-tasks scroll-bar">
-                    <h2 class="active-tasks__title">Tasks</h2>
-
-                    <!-- Active tasks wrap -->
-
-                    <div class="active-tasks__wrap"></div>
-                </div>
-            </div>
+        <div class="input-wrap">
+          <input
+            class="input-task"
+            type="text"
+            placeholder="New task"
+            autocomplete="off"
+          />
+          <button class="add-button" type="button">Add</button>
         </div>
+
+        <!-- Hidden tasks wrap -->
+
+        <div hidden class="tasks-wrap">
+          <button class="delete-button-tasks" type="button">Delete all</button>
+
+          <!-- Active tasks -->
+
+          <div class="active-tasks scroll-bar">
+            <h2 class="active-tasks__title">Tasks</h2>
+
+            <!-- Active tasks wrap -->
+
+            <div class="active-tasks__wrap"></div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- Script -->
-
     <script src="js/script.js"></script>
-</body>
-
+  </body>
 </html>
