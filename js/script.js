@@ -1,152 +1,155 @@
-'use strict';
-
-const inputTask = document.querySelector('.input-task');
-const addButton = document.querySelector('.add-button');
+const newTaskField = document.querySelector('.input-task');
+const addTaskButton = document.querySelector('.add-button');
 const tasksWrap = document.querySelector('.tasks-wrap');
-const deleteButtonTasks = document.querySelector('.delete-button-tasks');
+const deleteTasksButton = document.querySelector('.delete-button-tasks');
 const activeTasksWrap = document.querySelector('.active-tasks__wrap');
 
 let tasks = JSON.parse(localStorage.getItem('to-do-list')) || [];
 
-function createTask() {
-  const text = inputTask.value;
-  if (text) {
-    if (!tasks) {
-      tasks = [];
-    }
-    const taskDescr = {
-      name: text,
-      checked: false,
-    };
-    tasks.push(taskDescr);
-    localStorage.setItem('to-do-list', JSON.stringify(tasks));
-    inputTask.value = '';
-    showToDoList();
-  }
-}
+const setTasks = () =>
+  localStorage.setItem('to-do-list', JSON.stringify(tasks));
 
-function showToDoList() {
-  let template = '';
-  if (tasks) {
-    tasks.forEach((task, id) => {
-      template += createTemplate(task.name, id);
-      render(template);
-    });
-  }
-}
-showToDoList();
-
-function createTemplate(task, id) {
+function createTemplate(id, text, value) {
   return `
-        <div class="task task-wrap">
-            <div class="input-task">
-                <label for="${id}" class="check" >
-                    <input id="${id}" data-id="${id}" class="check__input" type="checkbox">
-                    <span id="${id}" data-id="${id}" class="check__box"></span>
-                </label>
-                <div class="text" contenteditable="false">${task}</div>
-            </div>
-            <div class="action-task">
-                <span class="edit-text"></span>
-                <span class="bin"></span>
-            </div>
-        </div>
-    `;
+    <div data-task-id="${id}" class="task task-wrap">
+      <div class="input-task">
+        <label for="${id}" class="check">
+          <input
+            id="${id}"
+            data-checked="${value}"
+            class="check__input"
+            type="checkbox"
+          />
+          <span id="${id}" class="check__box"></span>
+        </label>
+        <div class="text" contenteditable="false">${text}</div>
+      </div>
+      <div class="action-task">
+        <span class="edit-text"></span>
+        <span class="bin"></span>
+      </div>
+    </div>
+  `;
 }
 
-function render(template) {
-  activeTasksWrap.innerHTML = template;
-  addEventListeners();
-  tasksWrap.hidden = false;
+function renderAndShowTasks() {
+  let template = '';
+
+  tasks.forEach((task) => {
+    template += createTemplate(task.id, task.description, task.checked);
+    activeTasksWrap.innerHTML = template;
+    addEventListeners();
+    tasksWrap.hidden = false;
+  });
 }
+
+renderAndShowTasks();
 
 function addEventListeners() {
-  const tasks = document.querySelectorAll('.task');
-  tasks.forEach((task) => {
-    const checkInput = task.querySelector('.check__input');
+  document.querySelectorAll('.task').forEach((task) => {
+    const taskField = task.querySelector('.check__input');
     const pencil = task.querySelector('.edit-text');
     const bin = task.querySelector('.bin');
-    checkInput.addEventListener('change', completeTask);
-    pencil.addEventListener('click', onEditTextOfTask);
+
+    taskField.addEventListener('change', completeTask);
+    pencil.addEventListener('click', toggleTaskEditing);
     bin.addEventListener('click', deleteTask);
   });
 }
 
+function createTask() {
+  const fieldValue = newTaskField.value.trim();
+  if (!fieldValue) {
+    return;
+  }
+
+  tasks.push({
+    id: String(Date.now()),
+    description: fieldValue,
+    checked: false,
+  });
+  setTasks();
+
+  newTaskField.value = '';
+  renderAndShowTasks();
+}
+
+const findTaskIndex = (task) =>
+  tasks.findIndex((el) => el.id === task.dataset.taskId);
+
 function completeTask(e) {
-  const tg = e.target;
-  const id = tg.dataset.id;
-  const check = tg.closest('.check');
-  const checkInput = check.querySelector('.check__input');
-  const task = tg.closest('.task');
-  const checkText = task.querySelector('.text');
-  if (checkInput.checked) {
-    tasks[id].checked = true;
-    checkInput.setAttribute('checked', 'checked');
-    checkText.classList.add('task_completed'); // Зачеркиваем задачу
+  const { target } = e;
+  const task = target.closest('.task');
+  const taskField = task.querySelector('.text');
+  target.dataset.checked = !JSON.parse(target.dataset.checked); // toggle boolean value of 'data-checked' attribute
+
+  if (target.dataset.checked === 'true') {
+    tasks[findTaskIndex(task)].checked = true;
+    setTasks();
+    taskField.classList.add('task_completed'); /* add in localStorage */
   } else {
-    tasks[id].checked = false;
-    checkInput.removeAttribute('checked', 'checked');
-    checkText.classList.remove('task_completed'); // Убираем зачеркивание
-  }
-  localStorage.setItem('to-do-list', JSON.stringify(tasks));
-}
-
-function onEditTextOfTask(e) {
-  const tg = e.target;
-  const task = tg.closest('.task');
-  const textInputInCheck = task.querySelector('.text');
-  const pencil = task.querySelector('.edit-text');
-  switch (textInputInCheck.getAttribute('contenteditable')) {
-    case 'false':
-      textInputInCheck.setAttribute('contenteditable', 'true');
-      setTheCursorPosition(e);
-      pencil.innerText = 'Save';
-      pencil.classList.toggle('save-text');
-      break;
-
-    case 'true':
-      textInputInCheck.setAttribute('contenteditable', 'false');
-      pencil.innerText = '';
-      pencil.classList.toggle('save-text');
-      break;
+    tasks[findTaskIndex(task)].checked = false;
+    setTasks();
+    taskField.classList.remove('task_completed'); /* add in localStorage */
   }
 }
 
-function setTheCursorPosition(e) {
-  const tg = e.target;
-  const task = tg.closest('.task');
-  const textInputInCheck = task.querySelector('.text');
-  const selection = window.getSelection();
-  const range = document.createRange();
-  range.selectNodeContents(textInputInCheck);
-  selection.removeAllRanges();
-  range.collapse(false);
-  selection.addRange(range);
+function toggleTaskEditing(e) {
+  const { target } = e;
+  const task = target.closest('.task');
+  const taskField = task.querySelector('.text');
+
+  if (taskField.getAttribute('contenteditable') === 'false') {
+    changeFieldAccessAndIcon(taskField, 'true', target, 'Save');
+    setCursorPosition(taskField);
+  } else {
+    tasks[findTaskIndex(task)].description = taskField.innerText;
+    setTasks();
+    changeFieldAccessAndIcon(taskField, 'false', target, '');
+  }
+}
+
+function changeFieldAccessAndIcon(field, value, icon, text) {
+  field.setAttribute('contenteditable', value);
+  icon.innerText = text;
+  icon.classList.toggle('save-text');
+}
+
+function setCursorPosition(field) {
+  field.focus();
+  window.getSelection().selectAllChildren(field);
+  window.getSelection().collapseToEnd();
 }
 
 function deleteTask(e) {
-  const tg = e.target;
-  const task = tg.closest('.task');
+  const task = e.target.closest('.task');
+  tasks.splice(findTaskIndex(task), 1);
+  setTasks();
   task.remove();
+
   if (!activeTasksWrap.children.length) {
-    tasksWrap.hidden = 'true';
+    clearTasksAndHideWrap();
   }
 }
 
-function deleteAllTasks() {
-  const allTasks = document.querySelectorAll('.task');
-  allTasks.forEach((task) => {
-    task.remove();
-  });
+function clearTasksAndHideWrap() {
+  localStorage.clear();
   tasksWrap.hidden = 'true';
 }
 
-const OnEnterInput = (e) => e.code === 'Enter' && createTask();
-
-function onClickAddButton() {
-  createTask();
+function deleteAllTasks() {
+  activeTasksWrap.innerHTML = '';
+  clearTasksAndHideWrap();
 }
 
-inputTask.addEventListener('keyup', OnEnterInput);
-addButton.addEventListener('click', onClickAddButton);
-deleteButtonTasks.addEventListener('click', deleteAllTasks);
+function createTaskOnEnterButton(e) {
+  if (e.code === 'Enter') {
+    createTask();
+  }
+}
+
+const createTaskOnAddButton = () => createTask();
+
+newTaskField.addEventListener('keyup', createTaskOnEnterButton);
+addTaskButton.addEventListener('click', createTaskOnAddButton);
+deleteTasksButton.addEventListener('click', deleteAllTasks);

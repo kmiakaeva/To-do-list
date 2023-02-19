@@ -225,7 +225,7 @@ h2 {
 
 /* Task on checked */
 
-.check__input:checked + .check__box {
+.check__input[data-checked='true'] + .check__box {
   background: url('../img/check-on-checked.svg');
 }
 
