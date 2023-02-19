@@ -138,6 +138,7 @@ function clearTasksAndHideWrap() {
 }
 
 function deleteAllTasks() {
+  tasks = [];
   activeTasksWrap.innerHTML = '';
   clearTasksAndHideWrap();
 }
