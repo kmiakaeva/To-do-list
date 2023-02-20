@@ -9,7 +9,7 @@ let tasks = JSON.parse(localStorage.getItem('to-do-list')) || [];
 const setTasks = () =>
   localStorage.setItem('to-do-list', JSON.stringify(tasks));
 
-function createTemplate(id, text, value) {
+function createTemplate(id, text, value, className) {
   return `
     <div data-task-id="${id}" class="task task-wrap">
       <div class="input-task">
@@ -22,7 +22,7 @@ function createTemplate(id, text, value) {
           />
           <span id="${id}" class="check__box"></span>
         </label>
-        <div class="text" contenteditable="false">${text}</div>
+        <div class="${className}" contenteditable="false">${text}</div>
       </div>
       <div class="action-task">
         <span class="edit-text"></span>
@@ -36,7 +36,21 @@ function renderAndShowTasks() {
   let template = '';
 
   tasks.forEach((task) => {
-    template += createTemplate(task.id, task.description, task.checked);
+    if (task.checked) {
+      template += createTemplate(
+        task.id,
+        task.description,
+        task.checked,
+        'text task_completed'
+      );
+    } else {
+      template += createTemplate(
+        task.id,
+        task.description,
+        task.checked,
+        'text'
+      );
+    }
     activeTasksWrap.innerHTML = template;
     addEventListeners();
     tasksWrap.hidden = false;
@@ -86,11 +100,11 @@ function completeTask(e) {
   if (target.dataset.checked === 'true') {
     tasks[findTaskIndex(task)].checked = true;
     setTasks();
-    taskField.classList.add('task_completed'); /* add in localStorage */
+    taskField.classList.add('task_completed');
   } else {
     tasks[findTaskIndex(task)].checked = false;
     setTasks();
-    taskField.classList.remove('task_completed'); /* add in localStorage */
+    taskField.classList.remove('task_completed');
   }
 }
 
