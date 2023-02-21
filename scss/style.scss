@@ -85,7 +85,7 @@ h2 {
   }
 
   .tasks-wrap {
-    margin-top: 20px;
+    margin-top: 10px;
 
     .delete-button-tasks {
       margin-bottom: 8px;
@@ -230,4 +230,9 @@ h2 {
 .task_completed {
   color: $medium-grey;
   text-decoration: line-through;
+}
+
+.error-message {
+  margin-top: 5px;
+  color: tomato;
 }

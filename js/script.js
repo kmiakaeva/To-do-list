@@ -71,9 +71,16 @@ function addEventListeners() {
   });
 }
 
+const removeErrorMessage = () =>
+  document.querySelector('.error-message')?.remove();
+
 function createTask() {
+  removeErrorMessage();
+
   const fieldValue = newTaskField.value.trim();
   if (!fieldValue) {
+    showErrorMessage();
+
     return;
   }
 
@@ -86,6 +93,19 @@ function createTask() {
 
   newTaskField.value = '';
   renderAndShowTasks();
+}
+
+function showErrorMessage() {
+  document
+    .querySelector('.input-wrap')
+    .insertAdjacentHTML(
+      'afterend',
+      '<div class="error-message">Please enter the task name</div>'
+    );
+
+  setTimeout(() => {
+    removeErrorMessage();
+  }, 4000);
 }
 
 const findTaskIndex = (task) =>

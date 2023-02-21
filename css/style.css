@@ -80,7 +80,7 @@ h2 {
           box-shadow: 0 0 0 1px rgb(57, 57, 57);
 }
 .to-do-list .tasks-wrap {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .to-do-list .tasks-wrap .delete-button-tasks {
   margin-bottom: 8px;
@@ -224,4 +224,9 @@ h2 {
 .task_completed {
   color: rgba(128, 128, 128, 0.5);
   text-decoration: line-through;
+}
+
+.error-message {
+  margin-top: 5px;
+  color: tomato;
 }
