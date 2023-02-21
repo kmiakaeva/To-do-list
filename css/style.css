@@ -178,6 +178,7 @@ h2 {
 }
 .task .input-task .text {
   max-width: 375px;
+  overflow-wrap: break-word;
   background-color: #fff;
   cursor: auto;
 }
