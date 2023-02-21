@@ -65,7 +65,7 @@ function addEventListeners() {
     const pencil = task.querySelector('.edit-text');
     const bin = task.querySelector('.bin');
 
-    taskField.addEventListener('change', completeTask);
+    taskField.addEventListener('change', changeTaskStatus);
     pencil.addEventListener('click', toggleTaskEditing);
     bin.addEventListener('click', deleteTask);
   });
@@ -91,7 +91,7 @@ function createTask() {
 const findTaskIndex = (task) =>
   tasks.findIndex((el) => el.id === task.dataset.taskId);
 
-function completeTask(e) {
+function changeTaskStatus(e) {
   const { target } = e;
   const task = target.closest('.task');
   const taskField = task.querySelector('.text');
@@ -117,7 +117,7 @@ function toggleTaskEditing(e) {
     changeFieldAccessAndIcon(taskField, 'true', target, 'Save');
     setCursorPosition(taskField);
   } else {
-    tasks[findTaskIndex(task)].description = taskField.innerText;
+    tasks[findTaskIndex(task)].description = taskField.innerText.trim();
     setTasks();
     changeFieldAccessAndIcon(taskField, 'false', target, '');
   }
