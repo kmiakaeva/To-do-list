@@ -14,7 +14,7 @@ $medium-grey: rgba(128, 128, 128, 0.5);
 
 body {
   min-height: 100vh;
-  padding-top: 3%;
+  padding-top: 2%;
   overflow: hidden;
   background: linear-gradient(to right, $violet, $aquamarine);
   color: $soft-black;
@@ -29,7 +29,7 @@ h2 {
   margin: 0 auto;
   padding: 40px 40px 32px 40px;
   max-width: 576px;
-  max-height: 600px;
+  max-height: 550px;
   background: white;
   border-radius: 15px;
   box-shadow: -1px 3px 6px $medium-grey;
@@ -120,7 +120,7 @@ h2 {
 
   .active-tasks {
     padding-right: 10px;
-    max-height: 300px;
+    max-height: 264px;
   }
 
   .scroll-bar {
