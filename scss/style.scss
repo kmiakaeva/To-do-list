@@ -15,6 +15,7 @@ $medium-grey: rgba(128, 128, 128, 0.5);
 body {
   min-height: 100vh;
   padding-top: 3%;
+  overflow: hidden;
   background: linear-gradient(to right, $violet, $aquamarine);
   color: $soft-black;
 }

@@ -8,6 +8,7 @@
 body {
   min-height: 100vh;
   padding-top: 3%;
+  overflow: hidden;
   background: -webkit-gradient(linear, left top, right top, from(rgb(230, 2, 255)), to(rgb(0, 251, 255)));
   background: linear-gradient(to right, rgb(230, 2, 255), rgb(0, 251, 255));
   color: rgb(57, 57, 57);
