@@ -1,41 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>To-Do List</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
 
-  <body>
-    <div class="container">
-      <div class="to-do-list">
-        <h1>to-do list</h1>
-        <div class="input-wrap">
-          <input
-            class="input-task"
-            type="text"
-            placeholder="New task"
-            autocomplete="off"
-          />
-          <button class="add-button" type="button">add</button>
-        </div>
-        <div hidden class="tasks-wrap">
-          <button class="delete-button-tasks" type="button">Delete all</button>
-          <h2>tasks</h2>
-          <div class="active-tasks scroll-bar">
-            <div class="active-tasks__wrap"></div>
-          </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do list</title>
+  <link rel="icon" href="public/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/styles/index.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="to-do-list">
+      <h1>to-do list</h1>
+      <!-- TODO: Renaming classes -->
+      <div class="input-wrap">
+        <input class="input-task" type="text" placeholder="New task" autocomplete="off">
+        <button class="add-button" type="button">add</button>
+      </div>
+      <div hidden class="tasks-wrap">
+        <button class="delete-button-tasks" type="button">delete all</button>
+        <h2>tasks</h2>
+        <div class="active-tasks scroll-bar">
+          <div class="active-tasks__wrap"></div>
         </div>
       </div>
     </div>
-    <script src="js/script.js"></script>
-  </body>
+  </div>
+  <script src="src/index.js"></script>
+</body>
+
 </html>

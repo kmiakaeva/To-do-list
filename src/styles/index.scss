@@ -1,10 +1,4 @@
-$violet: rgb(230, 2, 255);
-$hover-violet: rgba(230, 2, 255, 0.85);
-$aquamarine: rgb(0, 251, 255);
-$soft-black: rgb(57, 57, 57);
-$dark-grey: rgb(98, 98, 98);
-$grey: rgb(128, 128, 128);
-$medium-grey: rgba(128, 128, 128, 0.5);
+@import "variables";
 
 * {
   margin: 0;
@@ -92,6 +86,7 @@ h2 {
       margin-bottom: 8px;
       padding: 8px 10px;
       background: $grey;
+      text-transform: capitalize;
       color: white;
       border: 1px solid $medium-grey;
       border-radius: 7px;
@@ -224,7 +219,7 @@ h2 {
   }
 }
 
-.check__input[data-checked='true'] + .check__box {
+.check__input[data-checked='true']+.check__box {
   background: url('../img/check-on-checked.svg');
 }
 

@@ -1,0 +1,27 @@
+{
+  "name": "to-do-list",
+  "version": "1.0.0",
+  "description": "This is my to-do list web app developed using: HTML, CSS, SCSS and JavaScript.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-css": "node-sass --include-path scss src/styles/index.scss src/styles/index.css --output-style compressed"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kmiakaeva/to-do-list.git"
+  },
+  "keywords": [
+    "js",
+    "javascript"
+  ],
+  "author": "Kristina Miakaeva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kmiakaeva/to-do-list/issues"
+  },
+  "homepage": "https://github.com/kmiakaeva/to-do-list#readme",
+  "devDependencies": {
+    "node-sass": "^9.0.0"
+  }
+}

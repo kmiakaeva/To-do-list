@@ -1,3 +1,4 @@
+// TODO: Refactor
 const newTaskField = document.querySelector('.input-task');
 const addTaskButton = document.querySelector('.add-button');
 const tasksWrap = document.querySelector('.tasks-wrap');
@@ -8,29 +9,6 @@ let tasks = JSON.parse(localStorage.getItem('to-do-list')) || [];
 
 const setTasks = () =>
   localStorage.setItem('to-do-list', JSON.stringify(tasks));
-
-function createTemplate(id, text, value, className) {
-  return `
-    <div data-task-id="${id}" class="task task-wrap">
-      <div class="input-task">
-        <label for="${id}" class="check">
-          <input
-            id="${id}"
-            data-checked="${value}"
-            class="check__input"
-            type="checkbox"
-          />
-          <span id="${id}" class="check__box"></span>
-        </label>
-        <div class="${className}" contenteditable="false">${text}</div>
-      </div>
-      <div class="action-task">
-        <span class="edit-text"></span>
-        <span class="bin"></span>
-      </div>
-    </div>
-  `;
-}
 
 function renderAndShowTasks() {
   let template = '';
@@ -58,6 +36,29 @@ function renderAndShowTasks() {
 }
 
 renderAndShowTasks();
+
+function createTemplate(id, text, value, className) {
+  return `
+    <div data-task-id="${id}" class="task task-wrap">
+      <div class="input-task">
+        <label for="${id}" class="check">
+          <input
+            id="${id}"
+            data-checked="${value}"
+            class="check__input"
+            type="checkbox"
+          />
+          <span id="${id}" class="check__box"></span>
+        </label>
+        <div class="${className}" contenteditable="false">${text}</div>
+      </div>
+      <div class="action-task">
+        <span class="edit-text"></span>
+        <span class="bin"></span>
+      </div>
+    </div>
+  `;
+}
 
 function addEventListeners() {
   document.querySelectorAll('.task').forEach((task) => {

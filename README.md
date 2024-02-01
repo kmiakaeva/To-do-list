@@ -1,6 +1,6 @@
 # To-Do List
 
-This is my to-do list web app developed using: HTML, CSS, SCSS and JavaScript.
+To-Do List web app developed using: HTML, CSS, SCSS and JavaScript.
 
 ## Try it here
 
@@ -8,4 +8,4 @@ This is my to-do list web app developed using: HTML, CSS, SCSS and JavaScript.
 
 ## Screenshot
 
-![](img/to-do-list.png)
+![](src/img/to-do-list.png)
