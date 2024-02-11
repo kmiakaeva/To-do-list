@@ -41,7 +41,7 @@ h2 {
     display: flex;
     justify-content: space-between;
 
-    .input-task {
+    .task-field {
       margin-right: 5px;
       padding: 10px;
       width: 90%;
@@ -82,7 +82,7 @@ h2 {
   .tasks-wrap {
     margin-top: 10px;
 
-    .delete-button-tasks {
+    .delete-button {
       margin-bottom: 8px;
       padding: 8px 10px;
       background: $grey;
@@ -149,7 +149,7 @@ h2 {
   align-items: center;
   border-bottom: 1px solid $medium-grey;
 
-  .input-task {
+  .task-field {
     display: flex;
 
     .check {

@@ -1,56 +1,61 @@
-// TODO: Refactor
-const newTaskField = document.querySelector('.input-task');
-const addTaskButton = document.querySelector('.add-button');
-const tasksWrap = document.querySelector('.tasks-wrap');
-const deleteTasksButton = document.querySelector('.delete-button-tasks');
-const activeTasksWrap = document.querySelector('.active-tasks__wrap');
+const CLASS_NAMES = {
+  TASK_FIELD: '.task-field',
+  ADD_BUTTON: '.add-button',
+  TASKS_WRAP: '.tasks-wrap',
+  DELETE_BUTTON_TASKS: '.delete-button',
+  ACTIVE_TASKS_WRAP: '.active-tasks__wrap',
+  ERROR_MESSAGE: '.error-message',
+  CHECK_INPUT: '.check__input',
+  EDIT_TEXT: '.edit-text',
+  BIN: '.bin',
+  TEXT: '.text',
+};
 
 let tasks = JSON.parse(localStorage.getItem('to-do-list')) || [];
 
-const setTasks = () =>
-  localStorage.setItem('to-do-list', JSON.stringify(tasks));
+function init() {
+  const taskField = document.querySelector(CLASS_NAMES.TASK_FIELD);
+  const addTaskButton = document.querySelector(CLASS_NAMES.ADD_BUTTON);
+  const deleteTasksButton = document.querySelector(
+    CLASS_NAMES.DELETE_BUTTON_TASKS
+  );
 
-function renderAndShowTasks() {
-  let template = '';
+  renderTasks();
+  clearTasks();
 
-  tasks.forEach((task) => {
-    if (task.checked) {
-      template += createTemplate(
-        task.id,
-        task.description,
-        task.checked,
-        'text task_completed'
-      );
-    } else {
-      template += createTemplate(
-        task.id,
-        task.description,
-        task.checked,
-        'text'
-      );
-    }
-    activeTasksWrap.innerHTML = template;
-    addEventListeners();
-    tasksWrap.hidden = false;
-  });
+  taskField.addEventListener(
+    'keyup',
+    (e) => e.code === 'Enter' && createTask()
+  );
+  addTaskButton.addEventListener('click', createTask);
+  deleteTasksButton.addEventListener('click', deleteAllTasks);
 }
 
-renderAndShowTasks();
+function renderTasks() {
+  const tasksWrap = document.querySelector(CLASS_NAMES.TASKS_WRAP);
+  const activeTasksWrap = document.querySelector(CLASS_NAMES.ACTIVE_TASKS_WRAP);
+  const template = tasks.map((task) => createTemplate(task)).join('');
 
-function createTemplate(id, text, value, className) {
+  activeTasksWrap.innerHTML = template;
+  tasksWrap.hidden = false;
+  addEventListeners();
+}
+
+function createTemplate({ id, value, checked }) {
+  const className = checked ? 'text task_completed' : 'text';
   return `
     <div data-task-id="${id}" class="task task-wrap">
-      <div class="input-task">
+      <div class="task-field">
         <label for="${id}" class="check">
           <input
             id="${id}"
-            data-checked="${value}"
+            data-checked="${checked}"
             class="check__input"
             type="checkbox"
           />
           <span id="${id}" class="check__box"></span>
         </label>
-        <div class="${className}" contenteditable="false">${text}</div>
+        <div class="${className}" contenteditable="false">${value}</div>
       </div>
       <div class="action-task">
         <span class="edit-text"></span>
@@ -62,9 +67,9 @@ function createTemplate(id, text, value, className) {
 
 function addEventListeners() {
   document.querySelectorAll('.task').forEach((task) => {
-    const taskField = task.querySelector('.check__input');
-    const pencil = task.querySelector('.edit-text');
-    const bin = task.querySelector('.bin');
+    const taskField = task.querySelector(CLASS_NAMES.CHECK_INPUT);
+    const pencil = task.querySelector(CLASS_NAMES.EDIT_TEXT);
+    const bin = task.querySelector(CLASS_NAMES.BIN);
 
     taskField.addEventListener('change', changeTaskStatus);
     pencil.addEventListener('click', toggleTaskEditing);
@@ -72,50 +77,57 @@ function addEventListeners() {
   });
 }
 
-const removeErrorMessage = () =>
-  document.querySelector('.error-message')?.remove();
+function clearTasks() {
+  const activeTasksWrap = document.querySelector(CLASS_NAMES.ACTIVE_TASKS_WRAP);
+  const tasksWrap = document.querySelector(CLASS_NAMES.TASKS_WRAP);
+
+  if (!activeTasksWrap.childElementCount) {
+    tasksWrap.hidden = true;
+    localStorage.clear();
+  }
+}
 
 function createTask() {
+  const taskField = document.querySelector(CLASS_NAMES.TASK_FIELD);
+  const value = taskField.value.trim();
   removeErrorMessage();
 
-  const fieldValue = newTaskField.value.trim();
-  if (!fieldValue) {
+  if (!value) {
     showErrorMessage();
-
-    return;
+  } else {
+    tasks = [
+      ...tasks,
+      { id: String(Date.now()), value: value, checked: false },
+    ];
+    setTasks();
+    taskField.value = '';
+    renderTasks();
   }
+}
 
-  tasks.push({
-    id: String(Date.now()),
-    description: fieldValue,
-    checked: false,
-  });
-  setTasks();
-
-  newTaskField.value = '';
-  renderAndShowTasks();
+function removeErrorMessage() {
+  const errorMessage = document.querySelector(CLASS_NAMES.ERROR_MESSAGE);
+  errorMessage?.remove();
 }
 
 function showErrorMessage() {
-  document
-    .querySelector('.input-wrap')
-    .insertAdjacentHTML(
-      'afterend',
-      '<div class="error-message">Please enter the task name</div>'
-    );
+  const inputWrap = document.querySelector('.input-wrap');
+  inputWrap.insertAdjacentHTML(
+    'afterend',
+    '<div class="error-message">Please enter the task name</div>'
+  );
 
-  setTimeout(() => {
-    removeErrorMessage();
-  }, 4000);
+  setTimeout(removeErrorMessage, 2000);
 }
 
-const findTaskIndex = (task) =>
-  tasks.findIndex((el) => el.id === task.dataset.taskId);
+function setTasks() {
+  localStorage.setItem('to-do-list', JSON.stringify(tasks));
+}
 
 function changeTaskStatus(e) {
   const { target } = e;
   const task = target.closest('.task');
-  const taskField = task.querySelector('.text');
+  const taskField = task.querySelector(CLASS_NAMES.TEXT);
   target.dataset.checked = !JSON.parse(target.dataset.checked); // toggle boolean value of 'data-checked' attribute
 
   if (target.dataset.checked === 'true') {
@@ -129,22 +141,26 @@ function changeTaskStatus(e) {
   }
 }
 
+function findTaskIndex(task) {
+  return tasks.findIndex((el) => el.id === task.dataset.taskId);
+}
+
 function toggleTaskEditing(e) {
   const { target } = e;
   const task = target.closest('.task');
-  const taskField = task.querySelector('.text');
+  const taskField = task.querySelector(CLASS_NAMES.TEXT);
 
   if (taskField.getAttribute('contenteditable') === 'false') {
-    changeFieldAccessAndIcon(taskField, 'true', target, 'Save');
+    changeFieldAccess(taskField, 'true', target, 'Save');
     setCursorPosition(taskField);
   } else {
-    tasks[findTaskIndex(task)].description = taskField.innerText.trim();
+    tasks[findTaskIndex(task)].value = taskField.innerText.trim();
     setTasks();
-    changeFieldAccessAndIcon(taskField, 'false', target, '');
+    changeFieldAccess(taskField, 'false', target, '');
   }
 }
 
-function changeFieldAccessAndIcon(field, value, icon, text) {
+function changeFieldAccess(field, value, icon, text) {
   field.setAttribute('contenteditable', value);
   icon.innerText = text;
   icon.classList.toggle('save-text');
@@ -159,33 +175,18 @@ function setCursorPosition(field) {
 function deleteTask(e) {
   const task = e.target.closest('.task');
   tasks.splice(findTaskIndex(task), 1);
-  setTasks();
   task.remove();
 
-  if (!activeTasksWrap.children.length) {
-    clearTasksAndHideWrap();
-  }
-}
-
-function clearTasksAndHideWrap() {
-  localStorage.clear();
-  tasksWrap.hidden = 'true';
+  setTasks();
+  clearTasks();
 }
 
 function deleteAllTasks() {
-  tasks = [];
+  const activeTasksWrap = document.querySelector(CLASS_NAMES.ACTIVE_TASKS_WRAP);
   activeTasksWrap.innerHTML = '';
-  clearTasksAndHideWrap();
+  tasks = [];
+
+  clearTasks();
 }
 
-function createTaskOnEnterButton(e) {
-  if (e.code === 'Enter') {
-    createTask();
-  }
-}
-
-const createTaskOnAddButton = () => createTask();
-
-newTaskField.addEventListener('keyup', createTaskOnEnterButton);
-addTaskButton.addEventListener('click', createTaskOnAddButton);
-deleteTasksButton.addEventListener('click', deleteAllTasks);
+init();
