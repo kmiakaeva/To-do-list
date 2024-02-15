@@ -168,7 +168,7 @@ h2 {
         margin-left: -30px;
         width: 24px;
         height: 24px;
-        background: url('../img/check.svg');
+        background: url('../src/assets/check.svg');
         cursor: pointer;
       }
     }
@@ -193,7 +193,7 @@ h2 {
     margin-right: 10px;
     width: 24px;
     height: 24px;
-    background: url('../img/rename.svg');
+    background: url('../src/assets/rename.svg');
     cursor: pointer;
   }
 
@@ -210,17 +210,17 @@ h2 {
   .bin {
     width: 24px;
     height: 24px;
-    background: url('../img/bin.svg');
+    background: url('../src/assets/bin.svg');
     cursor: pointer;
 
     &:active {
-      background: url('../img/bin-on-active.svg');
+      background: url('../src/assets/bin-on-active.svg');
     }
   }
 }
 
 .check__input[data-checked='true']+.check__box {
-  background: url('../img/check-on-checked.svg');
+  background: url('../src/assets/check-on-checked.svg');
 }
 
 .task_completed {
