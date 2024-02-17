@@ -196,21 +196,39 @@ function toggleTaskEditing(e: MouseEvent): void {
   const taskField: HTMLElement | null =
     task?.querySelector(CLASS_NAMES.TEXT) ?? null;
 
-  if (taskField?.getAttribute('contenteditable') === 'false') {
-    changeFieldAccess(taskField, 'true', target, 'Save');
-    setCursorPosition(taskField);
-  } else if (task && taskField?.getAttribute('contenteditable') === 'true') {
-    tasks[findTaskIndex(task)].value = taskField.innerText.trim();
-    setTasks();
-    changeFieldAccess(taskField, 'false', target, '');
+  if (task && taskField) {
+    if (taskField.getAttribute('contenteditable') === 'false') {
+      enableTaskEditing(taskField, target);
+    } else {
+      saveTaskValue(task, taskField, target);
+    }
   }
+}
+
+function enableTaskEditing(
+  taskField: HTMLElement,
+  target: HTMLSpanElement
+): void {
+  changeFieldAccess(taskField, 'true', target, 'Save');
+  setCursorPosition(taskField);
+}
+
+function saveTaskValue(
+  task: HTMLElement,
+  taskField: HTMLElement,
+  target: HTMLSpanElement
+): void {
+  const index = findTaskIndex(task);
+  tasks[index].value = taskField.innerText.trim();
+  setTasks();
+  changeFieldAccess(taskField, 'false', target);
 }
 
 function changeFieldAccess(
   taskField: HTMLElement,
   value: string,
   icon: HTMLSpanElement,
-  text: string
+  text: string = ''
 ): void {
   taskField.setAttribute('contenteditable', value);
   icon.innerText = text;
