@@ -167,22 +167,26 @@ function changeTaskStatus(e: ChangeEvent): void {
   const task: HTMLElement | null = target.closest('.task');
   const taskField: HTMLElement | null =
     task?.querySelector(CLASS_NAMES.TEXT) ?? null;
-  // @ts-ignore
-  target.dataset.checked = !JSON.parse(target.dataset.checked); // toggle boolean value of 'data-checked' attribute
 
-  if (task && target.dataset.checked === 'true') {
-    tasks[findTaskIndex(task)].checked = true;
+  const isChecked = target.dataset.checked === 'true';
+  target.dataset.checked = String(!isChecked);
+
+  if (task) {
+    const index = findTaskIndex(task);
+    tasks[index].checked = !isChecked;
     setTasks();
-    taskField?.classList.add('task_completed');
-  } else if (task && target.dataset.checked === 'false') {
-    tasks[findTaskIndex(task)].checked = false;
-    setTasks();
-    taskField?.classList.remove('task_completed');
+
+    if (taskField) {
+      if (!isChecked) {
+        taskField.classList.add('task_completed');
+      } else {
+        taskField.classList.remove('task_completed');
+      }
+    }
   }
 }
 
 function findTaskIndex(task: HTMLElement): number {
-  // @ts-ignore
   return tasks.findIndex((el) => el.id === task.dataset.taskId);
 }
 
